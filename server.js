@@ -17,9 +17,11 @@ db.on('error', err => {
 
 const alienRouter=require('./routers/aliens');
 const userRouter=require('./routers/users');
+const requestRouter=require('./routers/request');
 
 app.use('/aliens',alienRouter);
 app.use('/users',userRouter);
+app.use('/request',requestRouter);
 
 app.get('/',function(req,res){
     res.send("hyy555dfsd");
