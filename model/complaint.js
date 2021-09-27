@@ -1,52 +1,45 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var requestSchema = new Schema({
+var complaintSchema = new Schema({
 	
-	category:{
-        type:Object,
-        required:true
-    },
-	productname:{
+	from:{
         type:String,
         required:true
     },
-	description:{
+    name:{
         type:String,
         required:true
     },
-	cost:{
+    to:{
         type:String,
         required:true
     },
-    u_id:{
+	subject:{
         type:String,
         required:true
     },
-    username:{
+	content:{
         type:String,
         required:true
     },
-    req_id:{
+    complaint_id:{
+        type:Number
+    },
+    reply:{
         type:String,
     },
-    status:{
+    replydate:{
         type:String,
-        required:true,
-        default:"Pending"
-    },
-    interest:{
-        type:Array
     },
     createddate:{
         type:String,
         required:true
     },
-    
 	
 }),
 
-Request = mongoose.model('request', requestSchema);
+Request = mongoose.model('complaint', complaintSchema);
 
 module.exports = Request;
 

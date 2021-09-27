@@ -18,10 +18,15 @@ db.on('error', err => {
 const alienRouter=require('./routers/aliens');
 const userRouter=require('./routers/users');
 const requestRouter=require('./routers/request');
+const complaintRouter=require('./routers/complaints');
+const adminRouter=require('./routers/admin');
 
 app.use('/aliens',alienRouter);
 app.use('/users',userRouter);
 app.use('/request',requestRouter);
+app.use('/complaint',complaintRouter);
+app.use('/admin',adminRouter);
+
 
 app.get('/',function(req,res){
     res.send("hyy555dfsd");

@@ -3,7 +3,6 @@ var Schema = mongoose.Schema;
 
 var userSchema = new Schema({
 	
-	u_id: Number,
 	firstName:{
         type:String,
         required:true
@@ -20,7 +19,29 @@ var userSchema = new Schema({
         type:String,
         required:true
     },
-	usertype:String
+    status:{
+        type:String,
+        required:true,
+        default:"Active"
+    },
+    mobno:{
+        type:String,
+    },
+    address:{
+        type:String,
+    },
+    createddate:{
+        type:String,
+        required:true
+    },
+    user_id:{
+        type:Number,
+    },
+	role:{
+        type:String,
+        required:true,
+        default:"user"
+    }
 }),
 
 User = mongoose.model('user', userSchema);
