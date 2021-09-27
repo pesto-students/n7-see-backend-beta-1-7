@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Request=require('../model/request');
+const Interest=require('../model/interest');
 const User=require('../model/user');
 var moment = require('moment');
 
@@ -154,21 +155,15 @@ router.post('/',async(req,res)=>{
 
 
 ////////////////////////////////
-//getmyinterest
-router.get('/',async (req,res)=>{
+
+//getmyrequest
+router.get('/getmyinterest/:u_id',async (req,res)=>{
     try{
-        const request = await Request.find().sort({_id:-1})
-        var data = JSON.stringify({ 
-            banner: request, 
-            latestlisting: request, 
-            highlightedlisting: request, 
-            featuredlisting: request
-          });
-        console.log(data);
+        const request = await Interest.find({"u_id":req.params.u_id})
         res.status(200).json({
             statuscode:"200",
-            response:JSON.parse(data),
-            message:"Request Successfully.."
+            response:request,
+            message:"Data Found"
         });
     }catch(err){
         res.status(401).json({
@@ -187,20 +182,45 @@ router.post('/expressinterest',async (req,res)=>{
     // console.log("r_id")
     var r_id=req.body.r_id;
     var u_id=req.body.u_id;
-    console.log(typeof r_id);
     try{
         // db.requests.update({_id:"614f695584fa43449cf7cb45"},{$push:{interest:"614f61765dca9747ccaa7b31"}})
         // const user = await User.find({_id:req.body.u_id})
         // /const req = await Request.updateOne({_id:ObjectId("6150905715199d05e4e95cc2")},{$push:{"interest":"614f61765dca9747ccaa7b31"}})
         // const user = await User.find({_id:u_id})
+        
+        await Request.find({_id:r_id}).then(function(re){
+            // console.log(re);
+            const interest=new Interest({
+                category:re[0].category,
+                productname:re[0].productname,
+                description:re[0].description,
+                cost:re[0].cost,
+                u_id:re[0].u_id,
+                r_id:re[0].r_id,
+                req_id:re[0].req_id,
+                username:re[0].username,
+                status:re[0].status,
+                createddate:moment(new Date()).format('DD/MM/YYYY')
+            })
+            try{
+                const data= interest.save() 
+                console.log(data)
+
+            }catch(err){
+                console.log(err)
+            }
+            
+        })
 
         await User.find({_id:u_id}).then(function(user) {
-
-            console.info('The promise was fulfilled with items!', user[0]);
+ 
+            // console.info('The promise was fulfilled with items!', user[0]);
              Request.updateOne({_id:r_id},{$push:{interest:user[0]}}).then(function(request) {
+                 
+                   
                     res.status(200).json({
                             statuscode:"200",
-                            response:"",
+                            response:request,
                             message:"Interest Accepted Successfully"
                         });
                 
@@ -220,6 +240,8 @@ router.post('/expressinterest',async (req,res)=>{
                     message:"Your interest is not accepted"
                 });
           });
+
+
 
         // const req = await Request.updateOne({_id:r_id},{$push:{interest:u_id}})
         // res.status(401).json({
@@ -343,3 +365,5 @@ router.patch('/:id',async (req,res)=>{
 })
 
 module.exports=router
+
+

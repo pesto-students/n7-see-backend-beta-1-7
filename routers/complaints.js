@@ -99,7 +99,30 @@ router.post('/',async(req,res)=>{
 })
 
 
-
+//getallmycomplaints
+router.post('/getallmycomplaints',async (req,res)=>{
+    var page=req.body.page;
+    var limit=req.body.limit;
+    var u_id=req.body.u_id;
+    try{
+        const complaints = await Complaint.find({from:u_id}).skip(limit*(page-1)).limit(limit)
+        const count = await Complaint.find({from:u_id}).count();
+        res.status(200).json({
+            statuscode:"200",
+            response:{
+                complaints:complaints,
+                count:count
+            },
+            message:"Request Successfully.."
+        });
+    }catch(err){
+        res.status(401).json({
+            statuscode:"500",
+            response:"",
+            message:"Request Failed"
+        });
+    }
+})
 
 
 ////////////////////////////////

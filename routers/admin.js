@@ -195,7 +195,7 @@ router.post('/getallcomplaints',async (req,res)=>{
     var limit=req.body.limit;
     try{
         const complaints = await Complaint.find().skip(limit*(page-1)).limit(limit)
-        const count = await City.find().count();
+        const count = await Complaint.find().count();
         res.status(200).json({
             statuscode:"200",
             response:{
