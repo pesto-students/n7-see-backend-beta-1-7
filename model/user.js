@@ -15,6 +15,12 @@ var userSchema = new Schema({
         type:String,
         required:true
     },
+    city:{
+        type:String,
+    },
+    gender:{
+        type:String,
+    },
 	password:{
         type:String,
         required:true

@@ -108,13 +108,17 @@ router.post('/updateuser',async (req,res)=>{
     var u_id=req.body.u_id;
     User.findOne(function(err,data){
         var myquery = {_id:u_id};
+        console.log(data);
         var newvalues = {$set:{
             firstName:req.body.firstName,
             lastName: req.body.lastName,
             email: req.body.email,
-            password: req.body.password,
+            // password:"pp",
+            role:"user",
             mobno:req.body.mobno,
             address:req.body.address,
+            city:req.body.city,
+            gender:req.body.gender,
         }};
             User.updateOne(myquery,newvalues,function(err,data){
         if (err) 

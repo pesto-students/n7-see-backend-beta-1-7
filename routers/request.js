@@ -79,11 +79,35 @@ router.get('/deleteMyRequest/:_id',async (req,res)=>{
 //getmyrequest
 router.get('/getmyrequest/:u_id',async (req,res)=>{
     try{
-        const request = await Request.find({"u_id":req.params.u_id})
+        const request = await Request.find({"u_id":req.params.u_id}).sort({_id:-1})
         res.status(200).json({
             statuscode:"200",
             response:request,
             message:"Data Found"
+        });
+    }catch(err){
+        res.status(401).json({
+            statuscode:"500",
+            response:"",
+            message:"Request Failed"
+        });
+    }
+})
+
+router.post('/getmyrequest',async (req,res)=>{
+    var page=req.body.page;
+    var limit=req.body.limit;
+    var u_id=req.body.u_id;
+    try{
+        const request = await Request.find({"u_id":u_id}).skip(limit*(page-1)).limit(limit).sort({_id:-1})
+        const count = await Request.find({"u_id":u_id}).count();
+        res.status(200).json({
+            statuscode:"200",
+            response:{
+                request:request,
+                count:count
+            },
+            message:"Request Successfully.."
         });
     }catch(err){
         res.status(401).json({
@@ -132,6 +156,7 @@ router.post('/',async(req,res)=>{
         u_id:req.body.u_id,
         req_id:getReq_id(100000,1000000),
         username:req.body.username,
+        city:req.body.city,
         createddate:moment(new Date()).format('DD/MM/YYYY')
     })
     console.log(request)
@@ -174,10 +199,38 @@ router.get('/getmyinterest/:u_id',async (req,res)=>{
     }
 })
 
+
+
+router.post('/getmyinterest',async (req,res)=>{
+    var page=req.body.page;
+    var limit=req.body.limit;
+    var u_id=req.body.u_id;
+    try{
+        const interest = await Interest.find({"u_id":u_id}).skip(limit*(page-1)).limit(limit)
+        const count = await Interest.find({"u_id":u_id}).count();
+        res.status(200).json({
+            statuscode:"200",
+            response:{
+                interest:interest,
+                count:count
+            },
+            message:"Request Successfully.."
+        });
+    }catch(err){
+        res.status(401).json({
+            statuscode:"500",
+            response:"",
+            message:"Request Failed"
+        });
+    }
+})
+
+
+
 //setmyinterest
 router.post('/expressinterest',async (req,res)=>{
     // console.log("r_id")
-    console.log(req.body.r_id)
+    console.log("req.body.r_id")
     // // console.log(u_id)
     // console.log("r_id")
     var r_id=req.body.r_id;
@@ -189,14 +242,14 @@ router.post('/expressinterest',async (req,res)=>{
         // const user = await User.find({_id:u_id})
         
         await Request.find({_id:r_id}).then(function(re){
-            // console.log(re);
+            console.log(re);
             const interest=new Interest({
                 category:re[0].category,
                 productname:re[0].productname,
                 description:re[0].description,
                 cost:re[0].cost,
-                u_id:re[0].u_id,
-                r_id:re[0].r_id,
+                u_id:u_id,
+                r_id:r_id,
                 req_id:re[0].req_id,
                 username:re[0].username,
                 status:re[0].status,
@@ -204,7 +257,35 @@ router.post('/expressinterest',async (req,res)=>{
             })
             try{
                 const data= interest.save() 
-                console.log(data)
+                 User.find({_id:u_id}).then(function(user) {
+ 
+                    // console.info('The promise was fulfilled with items!', user[0]);
+                     Request.updateOne({_id:r_id},{$push:{interest:user[0]}}).then(function(request) {
+                         
+                           
+                            res.status(200).json({
+                                    statuscode:"200",
+                                    response:request,
+                                    message:"Interest Accepted Successfully"
+                                });
+                        
+                      }, function(err) {
+                            res.status(401).json({
+                                statuscode:"401",
+                                response:"",
+                                message:"Interest Not Accepted"
+                            });
+                      });
+        
+                  }, function(err) {
+        
+                        res.status(401).json({
+                            statuscode:"401",
+                            response:"",
+                            message:"Your interest is not accepted"
+                        });
+                  });
+                console.log("data",data)
 
             }catch(err){
                 console.log(err)
@@ -212,34 +293,34 @@ router.post('/expressinterest',async (req,res)=>{
             
         })
 
-        await User.find({_id:u_id}).then(function(user) {
+        // await User.find({_id:u_id}).then(function(user) {
  
-            // console.info('The promise was fulfilled with items!', user[0]);
-             Request.updateOne({_id:r_id},{$push:{interest:user[0]}}).then(function(request) {
+        //     // console.info('The promise was fulfilled with items!', user[0]);
+        //      Request.updateOne({_id:r_id},{$push:{interest:user[0]}}).then(function(request) {
                  
                    
-                    res.status(200).json({
-                            statuscode:"200",
-                            response:request,
-                            message:"Interest Accepted Successfully"
-                        });
+        //             res.status(200).json({
+        //                     statuscode:"200",
+        //                     response:request,
+        //                     message:"Interest Accepted Successfully"
+        //                 });
                 
-              }, function(err) {
-                    res.status(401).json({
-                        statuscode:"401",
-                        response:"",
-                        message:"Interest Not Accepted"
-                    });
-              });
+        //       }, function(err) {
+        //             res.status(401).json({
+        //                 statuscode:"401",
+        //                 response:"",
+        //                 message:"Interest Not Accepted"
+        //             });
+        //       });
 
-          }, function(err) {
+        //   }, function(err) {
 
-                res.status(401).json({
-                    statuscode:"401",
-                    response:"",
-                    message:"Your interest is not accepted"
-                });
-          });
+        //         res.status(401).json({
+        //             statuscode:"401",
+        //             response:"",
+        //             message:"Your interest is not accepted"
+        //         });
+        //   });
 
 
 
@@ -332,6 +413,57 @@ router.post('/expressinterest',async (req,res)=>{
         });
     }
 })
+
+
+router.post('/search', async (req, res, next)=> {
+    try{
+        var search=req.body.search;
+        var page=req.body.page;
+        var limit=req.body.limit;
+        // const result = await Request.find({category: { $regex: '.*' + search + '.*' } }).skip(limit*(page-1)).limit(limit).sort({_id:-1})
+        const count = await Request.find({category: { $regex: '.*' + search + '.*' } }).count();
+
+        const result = await Request.aggregate([
+            { "$match": { category: { $regex: '.*' + search + '.*' } } },
+            {        
+                        $lookup:
+                        {
+                            from:"cities",
+                            localField:"city",
+                            foreignField:"city",
+                            as:"citys"
+                        }
+                    
+              },
+            
+            ]).skip(limit*(page-1)).limit(limit).sort({_id:-1})
+        // var productname="sdf";
+    
+        // const request = await Request.find({category: { $regex: '.*' + category + '.*' } });
+
+        // const request = await Request.find({
+        //     $and: [
+        //       { category: { $regex: '.*' + category + '.*' } },
+        //       { productname: { $regex: '.*' + productname + '.*' } },
+        //     ],
+        //   })
+        res.status(200).json({
+            statuscode:"200",
+            response:{
+                result:result,
+                count:count
+            },
+            message:"Data Found"
+        });
+    }catch(err){
+        res.status(401).json({
+            statuscode:"500",
+            response:"",
+            message:"Request Failed"
+        });
+    };
+});
+
 
 router.post('/history', async (req, res, next)=> {
     try{

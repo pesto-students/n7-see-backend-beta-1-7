@@ -16,29 +16,110 @@ router.get('/getadmindashboard',async (req,res)=>{
         const latestRequest=await Request.find().limit(6);
         const latestCategory=await Category.find().limit(5);
         const topCategory=await Request.aggregate([{$group:{_id: "$category", count:{$count:{}}}},{$sort:({"count":-1})}])
-        const reqCount=await Request.aggregate([{$group:{_id: "$createddate", count:{$count:{}}}}])
-        const usercount=await User.aggregate([{$group:{_id: "$createddate", count:{$count:{}}}}])
-        console.log(usercount);
-//         .toArray(function (err, result) {
-//                 if (err) {
-//                     console.log(err);
-//                     return;
-//                 }
-//                 else
-//                 {
-//                     console.log(result);
-//                     res.json(result);
-//                 }
-//             });
+        const requestCount=await Request.aggregate([{$group:{_id: "$createddate", count:{$count:{}}}}]).sort({_id:-1})
+        const userCount=await User.aggregate([{$group:{_id: "$createddate", count:{$count:{}}}}]).sort({_id:-1})
+        console.log(requestCount);
+
+        // const usersCount=User.aggregate([
+        //     {
+        //       $group: {
+        //         _id: {
+        //           month: { $month: "$createddate" },
+        //           day: { $dayOfMonth: "$createddate" },
+        //           year: { $year: "$createddate" }
+        //         },
+        //         count: { $count:{}}
+        //       }
+        //     }
+        //   ]);
+
+          var d = new Date();
+            d.setDate(d.getDate()-7);
+
+            // const usersCount=User.aggregate([
+            //     {
+            //       $match:{
+            //           createddate: {$gte: d,$lte: new Date()}
+            //         }
+            //    },
+            //    {
+            //        $group:{_id:null, user:{$count:{}}}
+            //    }
+            //  ]).toArray(function (err, result) {
+            //     if (err) {
+            //         console.log(err);
+            //         return;
+            //     }
+            //     else
+            //     {
+            //         console.log(result);
+            //         return result
+            //         // res.json(result);
+            //     }
+            // });
+
+
+
+            // const requestCount=Request.aggregate([
+            //     {
+            //       $match:{
+            //           createddate: {$gte: d,$lte: d.setDate(d.getDate())}
+            //         }
+            //    },
+            //    {
+            //        $group:{_id:null, category:{$count:{}}}
+            //    }
+            //  ]).toArray(function (err, result) {
+            //     if (err) {
+            //         console.log(err);
+            //         return;
+            //     }
+            //     else
+            //     {
+            //         console.log(result);
+            //         return result
+            //         // res.json(result);
+            //     }
+            // });
+
+
+            // const requestCount=Request.aggregate( [
+            //     { 
+            //         $match: { 
+            //             createddate: { $gte: d }
+            //         }
+            //     },
+            //     { 
+            //         $group: {
+            //             _id: { "month": { $substrCP: [ "$createddate", 0, 7 ] } }, 
+            //             count: { $sum: 1 }
+            //         } 
+            //     }
+            // ]).toArray(function (err, result) {
+            //         if (err) {
+            //             console.log(err);
+            //             return;
+            //         }
+            //         else
+            //         {
+            //             console.log(result);
+            //             return result
+            //             // res.json(result);
+            //         }
+            //     });
+
+            //     console.log("SDFsdf",requestCount)
         var data = JSON.stringify({ 
             totalUser: totalUser, 
+            userCount:userCount,
+            requestCount:requestCount,
             totalRequest: totalRequest, 
             requestPending: requestPending, 
             requestApproved: requestApproved,
             latestRequest:latestRequest,
             latestCategory:latestCategory,
-            topCategory:topCategory
-
+            topCategory:topCategory,
+            
           });
 
           res.status(200).json({
@@ -58,7 +139,7 @@ router.post('/getallusers',async (req,res)=>{
     var page=req.body.page;
     var limit=req.body.limit;
     try{
-        const users = await User.find().skip(limit*(page-1)).limit(limit)
+        const users = await User.find().skip(limit*(page-1)).limit(limit).sort({_id:-1})
         const count = await User.find().count();
         res.status(200).json({
             statuscode:"200",
@@ -83,7 +164,7 @@ router.post('/getallrequest',async (req,res)=>{
     var page=req.body.page;
     var limit=req.body.limit;
     try{
-        const request = await Request.find().skip(limit*(page-1)).limit(limit)
+        const request = await Request.find().skip(limit*(page-1)).limit(limit).sort({_id:-1})
         const count = await Request.find().count();
         res.status(200).json({
             statuscode:"200",
@@ -107,7 +188,7 @@ router.post('/getallcategory',async (req,res)=>{
     var page=req.body.page;
     var limit=req.body.limit;
     try{
-        const category = await Category.find().skip(limit*(page-1)).limit(limit)
+        const category = await Category.find().skip(limit*(page-1)).limit(limit).sort({_id:-1})
         const count = await Category.find().count();
         res.status(200).json({
             statuscode:"200",
@@ -169,7 +250,7 @@ router.post('/getallcity',async (req,res)=>{
     var page=req.body.page;
     var limit=req.body.limit;
     try{
-        const city = await City.find().skip(limit*(page-1)).limit(limit)
+        const city = await City.find().skip(limit*(page-1)).limit(limit).sort({_id:-1})
         const count = await City.find().count();
         res.status(200).json({
             statuscode:"200",
@@ -194,7 +275,7 @@ router.post('/getallcomplaints',async (req,res)=>{
     var page=req.body.page;
     var limit=req.body.limit;
     try{
-        const complaints = await Complaint.find().skip(limit*(page-1)).limit(limit)
+        const complaints = await Complaint.find().skip(limit*(page-1)).limit(limit).sort({_id:-1})
         const count = await Complaint.find().count();
         res.status(200).json({
             statuscode:"200",

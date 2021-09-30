@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 var requestSchema = new Schema({
 	
 	category:{
-        type:Object,
+        type:String,
         required:true
     },
 	productname:{
@@ -24,6 +24,10 @@ var requestSchema = new Schema({
         required:true
     },
     username:{
+        type:String,
+        required:true
+    },
+    city:{
         type:String,
         required:true
     },
