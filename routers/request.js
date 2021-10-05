@@ -3,12 +3,25 @@ const router = express.Router();
 const Request=require('../model/request');
 const Interest=require('../model/interest');
 const User=require('../model/user');
+var multer = require('multer');
 var moment = require('moment');
 
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        console.log("sdfsd",file)
+    cb(null, 'public')
+  },
+  filename: function (req, file, cb) {
+     
+    cb(null, Date.now() + '-' +file.originalname )
+  }
+})
+
+var upload = multer({ storage: storage }).single('file')
 //getallrequest
 router.get('/',async (req,res)=>{
     try{
-        const request = await Request.find().sort({_id:-1})
+        const request = await Request.find({"status":"Approved"}).sort({_id:-1})
         const latestlisting = await Request.find({"status":"Approved"}).sort({_id:-1})
         var data = JSON.stringify({ 
             banner: request, 
@@ -16,7 +29,7 @@ router.get('/',async (req,res)=>{
             highlightedlisting: request, 
             featuredlisting: request
           });
-        console.log(data);
+        // console.log(data);
         res.status(200).json({
             statuscode:"200",
             response:JSON.parse(data),
@@ -34,14 +47,15 @@ router.get('/',async (req,res)=>{
 //get home page content
 router.get('/getHomeRequest',async (req,res)=>{
     try{
-        const request = await Request.find().sort({_id:-1})
+        const request = await Request.find({"status":"Approved"}).sort({_id:-1})
+        const latestlisting = await Request.find({"status":"Approved"}).sort({_id:-1})
         var data = JSON.stringify({ 
             banner: request, 
-            latestlisting: request, 
+            latestlisting: latestlisting, 
             highlightedlisting: request, 
             featuredlisting: request
           });
-        console.log(data);
+        // console.log(data);
         res.status(200).json({
             statuscode:"200",
             response:JSON.parse(data),
@@ -56,12 +70,47 @@ router.get('/getHomeRequest',async (req,res)=>{
     }
 })
 
+router.post('/upload',function(req, res) {
+     console.log(req)
+    upload(req, res, function (err) {
+           if (err instanceof multer.MulterError) {
+               console.log("fwee");
+               return res.status(500).json(err)
+           } else if (err) {
+                  console.log("fweexcvxxcvx");
+               return res.status(500).json(err)
+           }
+      return res.status(200).send(req.file)
+
+    })
+
+});
+
+//get home page content
+router.get('/getRequestByCategory/:category',async (req,res)=>{
+    console.log(req.params.category);
+    try{
+        const request = await Request.find(req.params.category!=="Browse All"?{category:req.params.category}:null).sort({_id:-1})
+        // console.log(data);
+        res.status(200).json({
+            statuscode:"200",
+            response:request,
+            message:"Request Successfully.."
+        });
+    }catch(err){
+        res.status(401).json({
+            statuscode:"500",
+            response:"",
+            message:"Request Failed"
+        });
+    }
+})
 //deleteMyRequest
 router.get('/deleteMyRequest/:_id',async (req,res)=>{
     // console.log(req.params.email);
     try{
         const request = await Request.deleteOne({_id:req.params._id})
-        console.log(request);
+        //console.log(request);
         res.status(200).json({
             statuscode:"200",
             response:request,
@@ -120,7 +169,7 @@ router.post('/getmyrequest',async (req,res)=>{
 
 //getrequestbyid
 router.get('/getrequestbyid/:_id',async (req,res)=>{
-    console.log(req.params._id)
+   // console.log(req.params._id)
     try{
         const request = await Request.find({_id:req.params._id})
         res.status(200).json({
@@ -147,7 +196,7 @@ function getReq_id(min, max) {
 
   //add my request
 router.post('/',async(req,res)=>{
-    console.log(moment(new Date()).format('DD/MM/YYYY'))
+    // console.log(moment(new Date()).format('DD/MM/YYYY'))
     const request=new Request({
         category:req.body.category,
         productname:req.body.productname,
@@ -157,12 +206,13 @@ router.post('/',async(req,res)=>{
         req_id:getReq_id(100000,1000000),
         username:req.body.username,
         city:req.body.city,
+        image:req.body.image,
         createddate:moment(new Date()).format('DD/MM/YYYY')
     })
     console.log(request)
     try{
         const data=await request.save() 
-        console.log(data)
+        // console.log(data)
         res.status(200).json({
             statuscode:"200",
             response:{},
@@ -206,7 +256,7 @@ router.post('/getmyinterest',async (req,res)=>{
     var limit=req.body.limit;
     var u_id=req.body.u_id;
     try{
-        const interest = await Interest.find({"u_id":u_id}).skip(limit*(page-1)).limit(limit)
+        const interest = await Interest.find({"u_id":u_id}).skip(limit*(page-1)).limit(limit).sort({_id:-1})
         const count = await Interest.find({"u_id":u_id}).count();
         res.status(200).json({
             statuscode:"200",
@@ -230,7 +280,7 @@ router.post('/getmyinterest',async (req,res)=>{
 //setmyinterest
 router.post('/expressinterest',async (req,res)=>{
     // console.log("r_id")
-    console.log("req.body.r_id")
+    // console.log("req.body.r_id")
     // // console.log(u_id)
     // console.log("r_id")
     var r_id=req.body.r_id;
@@ -242,7 +292,7 @@ router.post('/expressinterest',async (req,res)=>{
         // const user = await User.find({_id:u_id})
         
         await Request.find({_id:r_id}).then(function(re){
-            console.log(re);
+            // console.log(re);
             const interest=new Interest({
                 category:re[0].category,
                 productname:re[0].productname,
@@ -253,6 +303,7 @@ router.post('/expressinterest',async (req,res)=>{
                 req_id:re[0].req_id,
                 username:re[0].username,
                 status:re[0].status,
+                image:re[0].image,
                 createddate:moment(new Date()).format('DD/MM/YYYY')
             })
             try{
@@ -285,7 +336,7 @@ router.post('/expressinterest',async (req,res)=>{
                             message:"Your interest is not accepted"
                         });
                   });
-                console.log("data",data)
+                // console.log("data",data)
 
             }catch(err){
                 console.log(err)
@@ -467,7 +518,7 @@ router.post('/search', async (req, res, next)=> {
 
 router.post('/history', async (req, res, next)=> {
     try{
-        console.log(req.body.email);
+        // console.log(req.body.email);
         const request = await Request.find({email:req.body.email})
         res.status(200).json({
             statuscode:"200",

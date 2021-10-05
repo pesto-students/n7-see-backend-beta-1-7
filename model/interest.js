@@ -38,6 +38,9 @@ var interestSchema = new Schema({
         type:String,
         required:true,
     },
+    image:{
+        type:Array
+    },
     createddate:{
         type:String,
         required:true

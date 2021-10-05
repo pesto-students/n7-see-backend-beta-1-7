@@ -39,6 +39,9 @@ var requestSchema = new Schema({
         required:true,
         default:"Pending"
     },
+    image:{
+        type:Array
+    },
     interest:{
         type:Array
     },

@@ -51,6 +51,7 @@ router.post('/',async(req,res)=>{
             lastName:req.body.lastName,
             email:req.body.email,
             password:req.body.password,
+            mobno:req.body.mobno,
             user_id:getU_id(100000,1000000),
             createddate:moment(new Date()).format('DD/MM/YYYY')
         });
