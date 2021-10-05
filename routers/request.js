@@ -71,13 +71,13 @@ router.get('/getHomeRequest',async (req,res)=>{
 })
 
 router.post('/upload',function(req, res) {
-     console.log(req)
+    //  console.log(req)
     upload(req, res, function (err) {
            if (err instanceof multer.MulterError) {
                console.log("fwee");
                return res.status(500).json(err)
            } else if (err) {
-                  console.log("fweexcvxxcvx");
+                //   console.log("fweexcvxxcvx");
                return res.status(500).json(err)
            }
       return res.status(200).send(req.file)
@@ -88,7 +88,7 @@ router.post('/upload',function(req, res) {
 
 //get home page content
 router.get('/getRequestByCategory/:category',async (req,res)=>{
-    console.log(req.params.category);
+    // console.log(req.params.category);
     try{
         const request = await Request.find(req.params.category!=="Browse All"?{category:req.params.category}:null).sort({_id:-1})
         // console.log(data);
