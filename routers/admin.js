@@ -407,7 +407,15 @@ router.get('/',async (req,res)=>{
     // res.send('Get Requests');
 })
 
-
+router.get('/admin',async (req,res)=>{
+    try{
+        const users = await User.find()
+        res.send("listening to 4000 admin");
+    }catch(err){
+        res.send()
+    }
+    // res.send('Get Requests');
+})
 
 ///////////master collection
 
