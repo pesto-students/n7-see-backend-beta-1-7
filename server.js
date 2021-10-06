@@ -32,7 +32,7 @@ app.use('/admin',adminRouter);
 
 
 app.get('/',function(req,res){
-    res.send("hyy555dfsd");
+    res.send("listening to 4000");
 })
 
 app.listen(process.env.PORT || 4000,function(){
