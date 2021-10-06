@@ -4,6 +4,7 @@ app.use(express.json())
 var cors = require('cors');
 app.use(cors());
 app.use(express.static('public'))
+require("dotenv").config();
 
 const mongoose = require('mongoose')
 const url = 'mongodb://127.0.0.1:27017/see_db'
@@ -34,6 +35,6 @@ app.get('/',function(req,res){
     res.send("hyy555dfsd");
 })
 
-app.listen(4000,function(){
+app.listen(process.env.PORT || 4000,function(){
     console.log('listening');
 })
