@@ -5,9 +5,10 @@ var cors = require('cors');
 app.use(cors());
 app.use(express.static('public'))
 require("dotenv").config();
-
 const mongoose = require('mongoose')
-const url = 'mongodb://127.0.0.1:27017/see_db'
+// const url = 'mongodb://127.0.0.1:27017/see_db'
+// mongo "mongodb+srv://serveend.wrjon.mongodb.net/see_db" --username serveend
+const url = 'mongodb+srv://serveend:serveend@serveend.wrjon.mongodb.net/see_db?retryWrites=true&w=majority'
 mongoose.connect(url, { useNewUrlParser: true })
 const db = mongoose.connection
 db.once('open', _ => {
@@ -38,3 +39,4 @@ app.get('/',function(req,res){
 app.listen(process.env.PORT || 4000,function(){
     console.log('listening');
 })
+
