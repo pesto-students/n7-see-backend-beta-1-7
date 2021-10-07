@@ -120,6 +120,7 @@ router.post('/updateuser',async (req,res)=>{
             address:req.body.address,
             city:req.body.city,
             gender:req.body.gender,
+            image:req.body.image
         }};
             User.updateOne(myquery,newvalues,function(err,data){
         if (err) 

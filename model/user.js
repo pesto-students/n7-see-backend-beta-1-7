@@ -47,7 +47,10 @@ var userSchema = new Schema({
         type:String,
         required:true,
         default:"user"
-    }
+    },
+    image:{
+        type:String
+    },
 }),
 
 User = mongoose.model('user', userSchema);

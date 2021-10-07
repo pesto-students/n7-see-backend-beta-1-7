@@ -90,8 +90,9 @@ router.post('/upload',function(req, res) {
 router.get('/getRequestByCategory/:category',async (req,res)=>{
     // console.log(req.params.category);
     var myReq=req.params.category!=="Browse All"?req.params.category:""
+    var myReqType=myReq!==""?{$and:[{category:myReq},{"status":"Approved"}]}:{"status":"Approved"}
     try{
-        const request = await Request.find({$and:[{category:myReq},{"status":"Approved"}]}).sort({_id:-1})
+        const request = await Request.find(myReqType).sort({_id:-1})
         // console.log(data);
         res.status(200).json({
             statuscode:"200",
