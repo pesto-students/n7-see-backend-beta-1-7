@@ -21,7 +21,7 @@ router.get('/getadmindashboard',async (req,res)=>{
         const requestCount=await Request.aggregate([{$group:{_id: "$createddate", count:{$sum:1}}},{$sort:({"count":-1})}])
         // const userCount=await User.aggregate([{$group:{_id: "$createddate", count:{$sum:1}}},{$sort:({"count":-1})}])
         const userCount=await User.aggregate([{$group:{_id: "$createddate", count:{$sum:1}}},{$sort:({"count":-1})}])
-        console.log(requestCount);
+        //console.log(requestCount);
 
         // const usersCount=User.aggregate([
         //     {
@@ -142,8 +142,8 @@ router.post('/getallusers',async (req,res)=>{
     var page=req.body.page;
     var limit=req.body.limit;
     try{
-        const users = await User.find().skip(limit*(page-1)).limit(limit).sort({_id:-1})
-        const count = await User.find().count();
+        const users = await User.find({ role: "user" }).skip(limit*(page-1)).limit(limit).sort({_id:-1})
+        const count = await User.find({ role: "user" }).count();
         res.status(200).json({
             statuscode:"200",
             response:{
@@ -302,7 +302,7 @@ router.get('/deleteCategory/:_id',async (req,res)=>{
     // console.log(req.params.email);
     try{
         const category = await Category.deleteOne({_id:req.params._id})
-        console.log(category);
+        //console.log(category);
         res.status(200).json({
             statuscode:"200",
             response:category,
@@ -319,10 +319,10 @@ router.get('/deleteCategory/:_id',async (req,res)=>{
 
 //deleteMyRequest
 router.get('/deleteCity/:_id',async (req,res)=>{
-    console.log(req.params._id);
+    //console.log(req.params._id);
     try{
         const city = await City.deleteOne({_id:req.params._id})
-        console.log(city);
+        //console.log(city);
         res.status(200).json({
             statuscode:"200",
             response:city,
@@ -380,7 +380,7 @@ router.post('/manageUser',async (req,res)=>{
 router.get('/getcontactinfo/:_id',async (req,res)=>{
     try{
         const myprofileinfo = await User.find({"_id":req.params._id})
-        console.log(myprofileinfo)
+        //console.log(myprofileinfo)
         var contactinfo={
             firstName:myprofileinfo[0].firstName,
             lastName:myprofileinfo[0].lastName,
@@ -428,7 +428,7 @@ router.post('/addcategory',async(req,res)=>{
         const category=new Category({
             category:req.body.category,
         });
-        console.log(category)
+        //console.log(category)
         const data=await category.save() 
         res.status(200).json({
             statuscode:"200",

@@ -13,7 +13,7 @@ router.get('/',async (req,res)=>{
             highlightedlisting: request, 
             featuredlisting: request
           });
-        console.log(data);
+        //console.log(data);
         res.status(200).json({
             statuscode:"200",
             response:JSON.parse(data),
@@ -80,10 +80,10 @@ router.post('/',async(req,res)=>{
         content:req.body.content, 
         createddate:moment(new Date()).format('DD/MM/YYYY')
     })
-    console.log(complaint)
+    //console.log(complaint)
     try{
         const data=await complaint.save() 
-        console.log(data)
+        //console.log(data)
         res.status(200).json({
             statuscode:"200",
             response:{},

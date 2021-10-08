@@ -55,9 +55,9 @@ router.post('/',async(req,res)=>{
             user_id:getU_id(100000,1000000),
             createddate:moment(new Date()).format('DD/MM/YYYY')
         });
-        console.log(user)
+        //console.log(user)
         const data=await user.save() 
-        console.log(data)
+        //console.log(data)
         res.status(200).json({
             statuscode:"200",
             response:data,
@@ -70,7 +70,7 @@ router.post('/',async(req,res)=>{
 
 //login user
 router.post('/login', async (req, res, next) =>{
-	console.log(req.body.email);
+	//console.log(req.body.email);
     try{
         User.findOne({email:req.body.email},function(err,data){
             if(data){
@@ -109,7 +109,7 @@ router.post('/updateuser',async (req,res)=>{
     var u_id=req.body.u_id;
     User.findOne(function(err,data){
         var myquery = {_id:u_id};
-        console.log(data);
+        //console.log(data);
         var newvalues = {$set:{
             firstName:req.body.firstName,
             lastName: req.body.lastName,
@@ -170,7 +170,7 @@ router.get('/getmyprofile/:_id',async (req,res)=>{
 router.get('/getcontactinfo/:_id',async (req,res)=>{
     try{
         const myprofileinfo = await User.find({"_id":req.params._id})
-        console.log(myprofileinfo)
+        //console.log(myprofileinfo)
         var contactinfo={
             firstName:myprofileinfo[0].firstName,
             lastName:myprofileinfo[0].lastName,

@@ -8,7 +8,7 @@ var moment = require('moment');
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        console.log("sdfsd",file)
+        //console.log("sdfsd",file)
     cb(null, 'public')
   },
   filename: function (req, file, cb) {
@@ -74,7 +74,7 @@ router.post('/upload',function(req, res) {
     //  console.log(req)
     upload(req, res, function (err) {
            if (err instanceof multer.MulterError) {
-               console.log("fwee");
+               //console.log("fwee");
                return res.status(500).json(err)
            } else if (err) {
                 //   console.log("fweexcvxxcvx");
@@ -211,7 +211,7 @@ router.post('/',async(req,res)=>{
         image:req.body.image,
         createddate:moment(new Date()).format('DD/MM/YYYY')
     })
-    console.log(request)
+    //console.log(request)
     try{
         const data=await request.save() 
         // console.log(data)
