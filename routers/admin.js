@@ -15,9 +15,12 @@ router.get('/getadmindashboard',async (req,res)=>{
         const requestApproved=await Request.find({ status: "Approved" }).count();
         const latestRequest=await Request.find().limit(6);
         const latestCategory=await Category.find().limit(5);
-        const topCategory=await Request.aggregate([{$group:{_id: "$category", count:{$count:{}}}},{$sort:({"count":-1})}])
-        const requestCount=await Request.aggregate([{$group:{_id: "$createddate", count:{$count:{}}}}]).sort({_id:-1})
-        const userCount=await User.aggregate([{$group:{_id: "$createddate", count:{$count:{}}}}]).sort({_id:-1})
+        // const topCategory=await Request.aggregate([{$group:{_id: "$category", count:{$count:{}}}},{$sort:({"count":-1})}])
+        const topCategory=await Request.aggregate([{$group:{_id: "$category", count:{$sum:1}}},{$sort:({"count":-1})}])
+        // const requestCount=await Request.aggregate([{$group:{_id: "$createddate", count:{$count:{}}}},{$sort:({"count":-1})}])
+        const requestCount=await Request.aggregate([{$group:{_id: "$createddate", count:{$sum:1}}},{$sort:({"count":-1})}])
+        // const userCount=await User.aggregate([{$group:{_id: "$createddate", count:{$sum:1}}},{$sort:({"count":-1})}])
+        const userCount=await User.aggregate([{$group:{_id: "$createddate", count:{$sum:1}}},{$sort:({"count":-1})}])
         console.log(requestCount);
 
         // const usersCount=User.aggregate([
