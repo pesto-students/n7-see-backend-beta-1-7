@@ -3,11 +3,8 @@ var Schema = mongoose.Schema;
 
 var requestSchema = new Schema({
 	
-	req_id: {
-        type:Number
-    },
 	category:{
-        type:Object,
+        type:String,
         required:true
     },
 	productname:{
@@ -22,7 +19,7 @@ var requestSchema = new Schema({
         type:String,
         required:true
     },
-    email:{
+    u_id:{
         type:String,
         required:true
     },
@@ -30,10 +27,29 @@ var requestSchema = new Schema({
         type:String,
         required:true
     },
+    city:{
+        type:String,
+        required:true
+    },
+    req_id:{
+        type:String,
+    },
+    status:{
+        type:String,
+        required:true,
+        default:"Pending"
+    },
+    image:{
+        type:Array
+    },
+    interest:{
+        type:Array
+    },
     createddate:{
         type:String,
         required:true
     },
+    
 	
 }),
 

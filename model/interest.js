@@ -1,61 +1,57 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var userSchema = new Schema({
+var interestSchema = new Schema({
 	
-	firstName:{
+	category:{
+        type:Object,
+        required:true
+    },
+	productname:{
         type:String,
         required:true
     },
-	lastName:{
+	description:{
         type:String,
         required:true
     },
-	email:{
+	cost:{
         type:String,
         required:true
     },
-    city:{
-        type:String,
-    },
-    gender:{
-        type:String,
-    },
-	password:{
+    u_id:{
         type:String,
         required:true
+    },
+    r_id:{
+        type:String,
+        required:true
+    },
+    username:{
+        type:String,
+        required:true
+    },
+    req_id:{
+        type:String,
     },
     status:{
         type:String,
         required:true,
-        default:"Active"
     },
-    mobno:{
-        type:String,
-    },
-    address:{
-        type:String,
+    image:{
+        type:Array
     },
     createddate:{
         type:String,
         required:true
     },
-    user_id:{
-        type:Number,
-    },
-	role:{
-        type:String,
-        required:true,
-        default:"user"
-    },
-    image:{
-        type:String
-    },
+    
+	
 }),
 
-User = mongoose.model('user', userSchema);
+Interest = mongoose.model('interest', interestSchema);
 
-module.exports = User;
+module.exports = Interest;
 
 
 // const mongoose = require('mongoose');

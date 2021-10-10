@@ -1,61 +1,47 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var userSchema = new Schema({
+var complaintSchema = new Schema({
 	
-	firstName:{
+	from:{
         type:String,
         required:true
     },
-	lastName:{
+    name:{
         type:String,
         required:true
     },
-	email:{
+    to:{
         type:String,
         required:true
     },
-    city:{
-        type:String,
-    },
-    gender:{
-        type:String,
-    },
-	password:{
+	subject:{
         type:String,
         required:true
     },
-    status:{
+	content:{
         type:String,
-        required:true,
-        default:"Active"
+        required:true
     },
-    mobno:{
+    complaint_id:{
+        type:Number
+    },
+    reply:{
         type:String,
     },
-    address:{
+    replydate:{
         type:String,
     },
     createddate:{
         type:String,
         required:true
     },
-    user_id:{
-        type:Number,
-    },
-	role:{
-        type:String,
-        required:true,
-        default:"user"
-    },
-    image:{
-        type:String
-    },
+	
 }),
 
-User = mongoose.model('user', userSchema);
+Request = mongoose.model('complaint', complaintSchema);
 
-module.exports = User;
+module.exports = Request;
 
 
 // const mongoose = require('mongoose');
