@@ -488,8 +488,8 @@ router.post('/search', async (req, res, next)=> {
                         }
                     
               },
-            
-            ]).skip(limit*(page-1)).limit(limit).sort({_id:-1})
+              { $sort : {_id:-1} }
+            ]).skip(limit*(page-1)).limit(limit)
         // var productname="sdf";
     
         // const request = await Request.find({category: { $regex: '.*' + category + '.*' } });

@@ -167,6 +167,72 @@ router.get('/getmyprofile/:_id',async (req,res)=>{
     // res.send('Get Requests');
 })
 
+router.get('/getcontactinfodefault/:_id',async (req,res)=>{
+    try{
+        // const myprofileinfo = await Request.find({"r_id":req.params._id})
+        // const request = await Request.find({_id:req.params._id})
+        // const myprofileinfo = await User.find({"_id":request[0].u_id})
+        //    res.status(200).json({
+        //     statuscode:"200",
+        //     response:myprofileinfo,
+        //     message:"Contact Info found"
+        // });
+
+        try{
+            // db.requests.update({_id:"614f695584fa43449cf7cb45"},{$push:{interest:"614f61765dca9747ccaa7b31"}})
+            // const user = await User.find({_id:req.body.u_id})
+            // /const req = await Request.updateOne({_id:ObjectId("6150905715199d05e4e95cc2")},{$push:{"interest":"614f61765dca9747ccaa7b31"}})
+            // const user = await User.find({_id:u_id})
+            
+            await Request.find({_id:req.params._id}).then(function(request){
+                // console.log(re);
+                try{
+                    User.find({"_id":request[0].u_id}).then(function(myprofileinfo) {
+
+                         var contactinfo={
+                                firstName:myprofileinfo[0].firstName,
+                                lastName:myprofileinfo[0].lastName,
+                                email:myprofileinfo[0].email,
+                                mobno:myprofileinfo[0].mobno,
+                                address:myprofileinfo[0].address,
+                            }
+                        res.status(200).json({
+                            statuscode:"200",
+                            response:contactinfo,
+                            message:"Contact Info found"
+                        }); 
+             
+                      }, function(err) {
+            
+                            res.status(401).json({
+                                statuscode:"401",
+                                response:"",
+                                message:"Not found"
+                            });
+                      });
+
+    
+                }catch(err){
+                    console.log(err)
+                }
+                
+            })
+
+
+        }catch(err){
+            res.status(401).json({
+                statuscode:"500",
+                response:"",
+                message:"Not found!!"
+            });
+        }
+
+    }catch(err){
+        res.send()
+    }
+    // res.send('Get Requests');
+})
+
 //getcontactinfo
 router.get('/getcontactinfo/:_id',async (req,res)=>{
     try{
