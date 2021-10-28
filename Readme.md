@@ -43,13 +43,13 @@ Install the dependencies and open the terminal and then run the following comman
 $ git clone https://github.com/pesto-students/n7-see-backend-beta-1-7.git
 $ cd n7-see-backend-beta-1-7
 $ npm install
-$ npm run start
+$ nodemon server.js
 ```
 
 Verify by navigating to below address in your preferred browser.
 
 ```sh
-localhost:[3000] or running port
+localhost:[4000] or running port
 ```
 
 You should be able to see the landing page.
@@ -75,6 +75,7 @@ You should be able to see the landing page.
 -  Admin can manage request given by user 
 -  Admin have privilage to block and activate user 
 -  Admin have privilage reject or approve request
+
 # Credentials
 ## Admin User
     - username:admin@serveend.com
