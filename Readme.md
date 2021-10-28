@@ -57,6 +57,7 @@ You should be able to see the landing page.
 ## Features
 
 - PWA developed using React, React-hooks, Redux, Material-Ui and other useful resources mentioned above.
+- Backend Developed using Node Js and MongoDb
 - Unit test coverage(React Testing Library)
 
 ## About
