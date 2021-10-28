@@ -87,7 +87,7 @@ You should be able to see the landing page.
 
 ## Resources
 
-<a href="https://drive.google.com/file/d/1Ab8ORPkrZJZ_in82XbpN8cbiblNGpSy3/view?usp=sharing">High Level Design</a>\
+<a href="https://drive.google.com/file/d/1xeIDndfs1ni4ScXyVM7g7Pxu4aYEswkJ/view">High Level Design</a>\
 <a href="https://drive.google.com/file/d/1bXRijTPDysHYp3gNcDNeMRofkujhKdqm/view"> PRD </a>\
 <a href="https://drive.google.com/file/d/1TiRBw-HDXXPhVmxcxp_0yMH2r3mt10Pn/view"> Wireframes</a>
 
