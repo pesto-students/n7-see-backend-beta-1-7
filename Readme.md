@@ -51,12 +51,6 @@ You should be able to see the landing page.
     - username:pesto@pestotech.com
     - password:pesto
 
-## Resources
-
-<a href="https://drive.google.com/file/d/1xeIDndfs1ni4ScXyVM7g7Pxu4aYEswkJ/view">High Level Design</a>\
-<a href="https://drive.google.com/file/d/1bXRijTPDysHYp3gNcDNeMRofkujhKdqm/view"> PRD </a>\
-<a href="https://drive.google.com/file/d/1TiRBw-HDXXPhVmxcxp_0yMH2r3mt10Pn/view"> Wireframes</a>
-
 ## Contributors ✨
 
 <a href="https://github.com/kirancchand"><img src="" width="100px;" alt=""/>Kiran C Chand</a>
