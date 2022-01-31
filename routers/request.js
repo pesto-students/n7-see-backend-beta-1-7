@@ -15,31 +15,31 @@ AWS.config.update({
 })
 const s3 = new AWS.S3();
 
-console.log("Region: ", AWS.config.region);
+// console.log("Region: ", AWS.config.region);
 
-// var upload = multer({
-//     storage: multerS3({
-//         s3: s3,
-//         bucket: 'pesto-see-backend',
-//         key: function (req, file, cb) {
-//             cb(null, Date.now() + '-' +file.originalname ) //use Date.now() for unique file keys
-//         }
-//     })
-// }).single('file');
+var upload = multer({
+    storage: multerS3({
+        s3: s3,
+        bucket: 'pesto-see-backend',
+        key: function (req, file, cb) {
+            cb(null, Date.now() + '-' +file.originalname ) //use Date.now() for unique file keys
+        }
+    })
+}).single('file');
 
 
-var storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        //console.log("sdfsd",file)
-    cb(null, 'public')
-  },
-  filename: function (req, file, cb) {
+// var storage = multer.diskStorage({
+//     destination: function (req, file, cb) {
+//         //console.log("sdfsd",file)
+//     cb(null, 'public')
+//   },
+//   filename: function (req, file, cb) {
      
-    cb(null, Date.now() + '-' +file.originalname )
-  }
-})
+//     cb(null, Date.now() + '-' +file.originalname )
+//   }
+// })
 
-var upload = multer({ storage: storage }).single('file')
+// var upload = multer({ storage: storage }).single('file')
 //getallrequest
 router.get('/',async (req,res)=>{
     try{
