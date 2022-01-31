@@ -6,6 +6,7 @@ app.use(cors());
 app.use(express.static('public'))
 require("dotenv").config();
 const mongoose = require('mongoose')
+console.log(process.env.accessKeyId);
 // const url = 'mongodb://127.0.0.1:27017/see_db'
 // mongo "mongodb+srv://serveend.wrjon.mongodb.net/see_db" --username serveend
 const url = 'mongodb+srv://serveend:serveend@serveend.wrjon.mongodb.net/see_db?retryWrites=true&w=majority'

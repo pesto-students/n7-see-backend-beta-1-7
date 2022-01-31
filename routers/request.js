@@ -4,18 +4,19 @@ const router = express.Router();
 const Request=require('../model/request');
 const Interest=require('../model/interest');
 const User=require('../model/user');
+require('dotenv').config();
 var multer = require('multer');
 var multerS3 = require('multer-s3');
 var moment = require('moment');
 // AWS.config.loadFromPath('./config.json');
 AWS.config.update({
-    accessKeyId: "AKIAWJHINHAQFS5KN25M",
-    secretAccessKey: "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",
-    region: "us-east-2"
+    accessKeyId: process.env.accessKeyId, //"AKIAWJHINHAQFS5KN25M",
+    secretAccessKey: process.env.secretAccessKey, //"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",
+    region: process.env.region//"us-east-2"
 })
 const s3 = new AWS.S3();
 
-// console.log("Region: ", AWS.config.region);
+console.log("Regions: ", AWS.config);
 
 var upload = multer({
     storage: multerS3({
