@@ -10,13 +10,13 @@ var multerS3 = require('multer-s3');
 var moment = require('moment');
 // AWS.config.loadFromPath('./config.json');
 AWS.config.update({
-    accessKeyId: process.env.accessKeyId, //"AKIAWJHINHAQFS5KN25M",
-    secretAccessKey: process.env.secretAccessKey, //"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",
-    region: process.env.region//"us-east-2"
+    accessKeyId: process.env.accessKeyId, 
+    secretAccessKey: process.env.secretAccessKey, 
+    region: process.env.region
 })
 const s3 = new AWS.S3();
 
-console.log("Regions: ", AWS.config);
+// console.log("Regions: ", AWS.config);
 
 var upload = multer({
     storage: multerS3({
