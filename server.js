@@ -13,11 +13,11 @@ const url = 'mongodb+srv://serveend:serveend@serveend.wrjon.mongodb.net/see_db?r
 mongoose.connect(url, { useNewUrlParser: true })
 const db = mongoose.connection
 db.once('open', _ => {
-    console.log('Database connected:', url)
+    // console.log('Database connected:', url)
   })
 
 db.on('error', err => {
-    console.error('connection error:', err)
+    // console.error('connection error:', err)
   })
 
 const alienRouter=require('./routers/aliens');
