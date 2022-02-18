@@ -1,23 +1,46 @@
 const express = require('express');
+var AWS = require("aws-sdk");
 const router = express.Router();
 const Request=require('../model/request');
 const Interest=require('../model/interest');
 const User=require('../model/user');
+require('dotenv').config();
 var multer = require('multer');
+var multerS3 = require('multer-s3');
 var moment = require('moment');
-
-var storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        //console.log("sdfsd",file)
-    cb(null, 'public')
-  },
-  filename: function (req, file, cb) {
-     
-    cb(null, Date.now() + '-' +file.originalname )
-  }
+// AWS.config.loadFromPath('./config.json');
+AWS.config.update({
+    accessKeyId: process.env.accessKeyId, 
+    secretAccessKey: process.env.secretAccessKey, 
+    region: process.env.region
 })
+const s3 = new AWS.S3();
 
-var upload = multer({ storage: storage }).single('file')
+// console.log("Regions: ", AWS.config);
+
+var upload = multer({
+    storage: multerS3({
+        s3: s3,
+        bucket: 'pesto-see-backend',
+        key: function (req, file, cb) {
+            cb(null, Date.now() + '-' +file.originalname ) //use Date.now() for unique file keys
+        }
+    })
+}).single('file');
+
+
+// var storage = multer.diskStorage({
+//     destination: function (req, file, cb) {
+//         //console.log("sdfsd",file)
+//     cb(null, 'public')
+//   },
+//   filename: function (req, file, cb) {
+     
+//     cb(null, Date.now() + '-' +file.originalname )
+//   }
+// })
+
+// var upload = multer({ storage: storage }).single('file')
 //getallrequest
 router.get('/',async (req,res)=>{
     try{
@@ -85,6 +108,8 @@ router.post('/upload',function(req, res) {
     })
 
 });
+
+
 
 //get home page content
 router.get('/getRequestByCategory/:category',async (req,res)=>{
