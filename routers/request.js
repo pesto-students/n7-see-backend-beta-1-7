@@ -21,7 +21,7 @@ const s3 = new AWS.S3();
 var upload = multer({
     storage: multerS3({
         s3: s3,
-        bucket: 'pesto-see-backend',
+        bucket: 'pesto',
         key: function (req, file, cb) {
             cb(null, Date.now() + '-' +file.originalname ) //use Date.now() for unique file keys
         }
